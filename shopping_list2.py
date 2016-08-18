@@ -23,12 +23,16 @@ def add_new_list(key):
 	else:
 		print "That list already exists."
 
-def add_item_to_list(key,item):
+def add_item_to_list(key,items_list):
 #prompt for existing list and then add item to that list
 	if key in shopping_list:
-		shopping_list[key]+= item
+		shopping_list[key].extend(items_list)
 	else:
 		print "That list does not exist."
+
+def parse_string(items_string):
+	items_list = items_string.split(",")
+	return items_list
 
 def remove_item_from_list(key,item):
 #prompt for existing list and exiting item, remove item from list
@@ -60,8 +64,11 @@ def main():
 			add_new_list(key)
 		elif choice==4:
 			key=(raw_input("What list do you want to add to?")).lower()
-			item=(str(raw_input("What item do you want to add to the list?"))).lower()
-			add_item_to_list(key,item)
+			items_string=(str(raw_input("What item do you want to add to the list?"))).lower()
+			#if there is a common in this raw input, then call the parsing function
+			#give the output of the parsing function to the add item to list function below
+			items_list=parse_string(items_string)
+			add_item_to_list(key,items_list)
 		elif choice ==5:
 			key=(raw_input("What list do you want to remove an item from?")).lower()
 			item=(str(raw_input("What item do you want to remove from the list?"))).lower()
