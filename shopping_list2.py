@@ -5,7 +5,8 @@ def menu():
 	choice = int(raw_input("\n0 - Main Menu.\n1 - Show all lists.\n" \
 		"2 - Show a specific list.\n3 - Add a new shopping list.\n" \
 		"4 - Add an item to a shopping list.\n5 - Remove an item from a shopping list.\n" \
-		"6 - Remove a list by nickname.\n7 - Exit when you are done.\n"))
+		"6 - Remove a list by nickname.\n7 - Open a file and add it to the shopping list.\n"
+		"8 - Exit when you are done and save to file.\n"))
 	return choice
 
 def show_all_lists():
@@ -50,8 +51,29 @@ def remove_list(key):
 	else:
 		print "That list does not exist"
 	
+def write_to_file(my_file, my_dict):
+	newList = []
+	with open(my_file, mode = "a") as my_file:
+		# for i in range(len(my_dict)):
+		newList.append(my_dict.values())
+		my_file.write(newList)
+
+
+def read_file(my_file):
+	with open(my_file, mode='r') as our_file:
+		raw_list = our_file.readlines()
+		new_list = []
+		for i in range(len(raw_list)):
+			new_string = raw_list[i].replace("\n", "")
+			new_list.append(new_string)
+		global shopping_list
+
+		key = my_file.split(".")[0]
+		shopping_list[key] = new_list
+		print shopping_list
 
 def main():
+
 	while(True):
 		choice=menu()
 		if choice==1:
@@ -76,40 +98,13 @@ def main():
 		elif choice==6:
 			key=(raw_input("What list do you want to remove?")).lower()
 			remove_list(key)
-		elif choice==7:
+		elif choice ==7:
+			my_file=(raw_input("What file do you want to open?"))
+			read_file(my_file)
+		elif choice==8:
+			write_to_file("shopping_list.txt", shopping_list)
 			break
 
 
 if __name__ == '__main__':
 	main()
-
-
-# def current_shopping_list():
-# 	for item in shopping_list:
-# 		print item
-
-# def add_shopping_list():
-# 	new_item=raw_input("What do you want to add?").lower()
-
-# 	global shopping_list
-# 	if shopping_list.count(new_item) == 0:
-# 		shopping_list = shopping_list + [new_item]
-# 	else:
-# 		print "That item is already on your list."
-
-# 	alphabetical_order()
-
-# def alphabetical_order():
-# 	global shopping_list
-# 	shopping_list.sort()
-# 	current_shopping_list()
-
-# def remove_from_list(): 
-# 	remove_item = raw_input("what do you want to remove?").lower() 
-
-# 	if shopping_list.count(remove_item) == 0: 
-# 		print "This item is not in your list"
-# 	else: 
-# 		shopping_list.remove(remove_item)   
-		
-# 	alphabetical_order()
