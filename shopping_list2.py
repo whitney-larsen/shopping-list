@@ -1,11 +1,11 @@
-shopping_list = {"target":["socks","soap","detergent","sponges"]}
+shopping_list = {}
 
 def menu():
  #display menu and get choice using raw_input
 	choice = int(raw_input("\n0 - Main Menu.\n1 - Show all lists.\n" \
 		"2 - Show a specific list.\n3 - Add a new shopping list.\n" \
 		"4 - Add an item to a shopping list.\n5 - Remove an item from a shopping list.\n" \
-		"6 - Remove a list by nickname.\n7 - Open a file and add it to the shopping list.\n"
+		"6 - Remove a list by nickname.\n7 - Open a shopping list from file.\n"
 		"8 - Exit when you are done and save to file.\n"))
 	return choice
 
@@ -51,26 +51,17 @@ def remove_list(key):
 	else:
 		print "That list does not exist"
 	
-def write_to_file(my_file, my_dict):
-	newList = []
-	with open(my_file, mode = "a") as my_file:
-		# for i in range(len(my_dict)):
-		newList.append(my_dict.values())
-		my_file.write(newList)
+def write_to_file(my_file):
+	with open(my_file, mode = "w") as my_file:
+		shopping_list_string = str(shopping_list)
+		my_file.write(shopping_list_string)
 
 
 def read_file(my_file):
-	with open(my_file, mode='r') as our_file:
-		raw_list = our_file.readlines()
-		new_list = []
-		for i in range(len(raw_list)):
-			new_string = raw_list[i].replace("\n", "")
-			new_list.append(new_string)
+	with open(my_file, mode='r') as my_file:
+		new_string = my_file.read()
 		global shopping_list
-
-		key = my_file.split(".")[0]
-		shopping_list[key] = new_list
-		print shopping_list
+		shopping_list = eval(new_string)
 
 def main():
 
@@ -87,8 +78,6 @@ def main():
 		elif choice==4:
 			key=(raw_input("What list do you want to add to?")).lower()
 			items_string=(str(raw_input("What item do you want to add to the list?"))).lower()
-			#if there is a common in this raw input, then call the parsing function
-			#give the output of the parsing function to the add item to list function below
 			items_list=parse_string(items_string)
 			add_item_to_list(key,items_list)
 		elif choice ==5:
@@ -102,8 +91,10 @@ def main():
 			my_file=(raw_input("What file do you want to open?"))
 			read_file(my_file)
 		elif choice==8:
-			write_to_file("shopping_list.txt", shopping_list)
+			write_to_file("shopping_list.txt")
 			break
+		else:
+			print "That is not a valid input."
 
 
 if __name__ == '__main__':
